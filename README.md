@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-# e-commerce
+
 =======
 # Sample E-Commerce application using Microservices / Cloud Native Architecture (CNA)
 **_A fictitious e-commerce sample application built using modern technologies and  Microservices & Cloud Native Architecture patterns._**
