@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: products
-        image: products:latest
+        image: prasad890/ecom-products:latest
         imagePullPolicy: IfNotPresent
         env:
         - name: MONGO_URI  ## Define the name of the variable
