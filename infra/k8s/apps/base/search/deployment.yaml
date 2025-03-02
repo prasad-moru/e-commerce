@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: search
-        image: search:latest
+        image: prasad890/ecom-search:latest
         imagePullPolicy: IfNotPresent
         env:
         - name: ELASTIC_URL  ## Define the name of the variable
