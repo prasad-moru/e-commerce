@@ -9,7 +9,7 @@ spec:
   template:
     metadata:
       labels:
-        app: store-ui-deployment
+        app: prasad890/ecom-store-ui:latest
     spec:
       containers:
       - name: store-ui
