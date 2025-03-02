@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: cart
-        image: cart:latest
+        image: prasad890/ecom-cart:latest
         imagePullPolicy: IfNotPresent
         env:
         - name: SPRING_REDIS_HOST  ## Define the name of the variable
