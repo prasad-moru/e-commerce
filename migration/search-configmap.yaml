@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: search-configmap
+  namespace: e-commerce
+data:
+  ELASTIC_URL: "http://elastic-service.shared-services.svc.cluster.local:9200/"

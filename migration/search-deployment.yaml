@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-deployment
+  namespace: e-commerce
+spec:
+  selector:
+    matchLabels:
+      app: search-deployment
+  template:
+    metadata:
+      labels:
+        app: search-deployment
+    spec:
+      containers:
+      - name: search
+        image: prasad890/ecom-search:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: ELASTIC_URL
+          valueFrom:
+            configMapKeyRef:
+              name: search-configmap
+              key: ELASTIC_URL
+        ports:
+        - name: http
+          containerPort: 4000
+          protocol: TCP

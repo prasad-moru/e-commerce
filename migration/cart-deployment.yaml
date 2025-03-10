@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-deployment
+  namespace: e-commerce
+spec:
+  selector:
+    matchLabels:
+      app: cart-deployment
+  template:
+    metadata:
+      labels:
+        app: cart-deployment
+    spec:
+      containers:
+      - name: cart
+        image: prasad890/ecom-cart:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: SPRING_REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: cart-configmap
+              key: SPRING_REDIS_HOST
+        - name: SPRING_REDIS_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: cart-configmap
+              key: SPRING_REDIS_PASSWORD
+        - name: SPRING_REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: cart-configmap
+              key: SPRING_REDIS_PORT
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP

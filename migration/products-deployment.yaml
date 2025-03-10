@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: products-deployment
+  namespace: e-commerce
+spec:
+  selector:
+    matchLabels:
+      app: products-deployment
+  template:
+    metadata:
+      labels:
+        app: products-deployment
+    spec:
+      containers:
+      - name: products
+        image: prasad890/ecom-products:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MONGO_URI
+          valueFrom:
+            configMapKeyRef:
+              name: products-configmap
+              key: MONGO_URI
+        - name: DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: products-configmap
+              key: DATABASE
+        ports:
+        - name: http
+          containerPort: 5000
+          protocol: TCP

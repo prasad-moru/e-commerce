@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: es-service
+  namespace: shared-services
+spec:
+  type: NodePort
+  ports:
+  - name: rest
+    protocol: TCP
+    port: 9200
+    targetPort: 9200
+    nodePort: 32200
+  - name: inter-node
+    protocol: TCP
+    port: 9300
+    targetPort: 9300
+    nodePort: 32300
+  selector:
+    app: es-deployment
