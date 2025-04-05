@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "store-ui.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "store-ui.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "store-ui.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "store-ui.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: store-ui
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: REACT_APP_PRODCUTS_URL_BASE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "store-ui.fullname" . }}-configmap
+              key: REACT_APP_PRODCUTS_URL_BASE
+        - name: REACT_APP_CART_URL_BASE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "store-ui.fullname" . }}-configmap
+              key: REACT_APP_CART_URL_BASE
+        ports:
+        - name: http
+          containerPort: {{ .Values.service.port }}
+          protocol: TCP

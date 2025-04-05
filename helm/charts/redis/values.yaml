@@ -1,0 +1,17 @@
+# Default values for Redis chart
+# This is a YAML-formatted file.
+
+nameOverride: ""
+fullnameOverride: ""
+
+namespace: shared-services
+
+image:
+  repository: redis
+  tag: 7-alpine
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 6379
+  nodePort: null

@@ -1,0 +1,21 @@
+# Default values for Store UI chart
+# This is a YAML-formatted file.
+
+nameOverride: ""
+fullnameOverride: ""
+
+namespace: e-commerce
+
+image:
+  repository: prasad890/ecom-store-ui
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  nodePort: null
+
+config:
+  productsUrlBase: http://products-service.e-commerce.svc.cluster.local:5000
+  cartUrlBase: http://cart-service.e-commerce.svc.cluster.local:8080

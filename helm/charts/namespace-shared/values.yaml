@@ -1,0 +1,5 @@
+# Default values for namespace-shared chart
+# This is a YAML-formatted file.
+
+namespace:
+  name: shared-services

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-service
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "mongodb.labels" . | nindent 4 }}
+spec:
+  {{- if eq "NodePort" .Values.service.type }}
+  type: NodePort
+  {{- else }}
+  type: {{ .Values.service.type }}
+  {{- end }}
+  ports:
+  - protocol: TCP
+    port: {{ .Values.service.port }}
+    targetPort: {{ .Values.service.port }}
+    {{- if and (eq "NodePort" .Values.service.type) .Values.service.nodePort }}
+    nodePort: {{ .Values.service.nodePort }}
+    {{- end }}
+  selector:
+    {{- include "mongodb.selectorLabels" . | nindent 4 }}

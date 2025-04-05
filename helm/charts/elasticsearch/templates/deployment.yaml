@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "elasticsearch.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "elasticsearch.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "elasticsearch.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "elasticsearch.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: es
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.ports.rest.port }}
+        - containerPort: {{ .Values.service.ports.interNode.port }}
+        env:
+        - name: xpack.security.enabled
+          value: {{ .Values.config.xpackSecurityEnabled | quote }}
+        - name: discovery.type
+          value: {{ .Values.config.discoveryType | quote }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
+      initContainers:
+      - name: increase-vm-max-map
+        image: busybox
+        command: ["sysctl", "-w", "vm.max_map_count=262144"]
+        securityContext:
+          privileged: true

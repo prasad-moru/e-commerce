@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "search.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "search.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "search.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "search.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: search
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: ELASTIC_URL
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "search.fullname" . }}-configmap
+              key: ELASTIC_URL
+        ports:
+        - name: http
+          containerPort: {{ .Values.service.port }}
+          protocol: TCP

@@ -1,0 +1,19 @@
+# Default values for Search service chart
+# This is a YAML-formatted file.
+
+nameOverride: ""
+fullnameOverride: ""
+
+namespace: e-commerce
+
+image:
+  repository: prasad890/ecom-search
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 4000
+
+config:
+  elasticUrl: http://elastic-service.shared-services.svc.cluster.local:9200/

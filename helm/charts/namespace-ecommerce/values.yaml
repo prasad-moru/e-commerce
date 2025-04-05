@@ -1,0 +1,5 @@
+# Default values for namespace-ecommerce chart
+# This is a YAML-formatted file.
+
+namespace:
+  name: e-commerce

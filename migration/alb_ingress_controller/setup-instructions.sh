@@ -33,7 +33,7 @@ kubectl apply -f alb-target-group-binding-crds.yaml
 # Step 4: Update the Deployment manifest
 echo "Please update alb-controller-deployment.yaml with your cluster name, VPC ID, and region before applying."
 echo "  --cluster-name=${CLUSTER_NAME}"
-echo "  --aws-vpc-id=<your-vpc-id>"
+echo "  --aws-vpc-id=vpc-0d3d61b72817b5481"
 echo "  --aws-region=${AWS_REGION}"
 
 # Step 5: Apply the controller manifests
@@ -56,3 +56,21 @@ echo "Waiting for ALB to be provisioned (this may take a few minutes)..."
 sleep 60
 echo "Your ALB address should appear below (if provisioning is complete):"
 kubectl get ingress -n e-commerce
+
+
+
+# Get VPC ID where your EKS cluster is running
+aws eks describe-cluster --name TFEKSWorkshop-cluster --query "cluster.resourcesVpcConfig.vpcId" --output text
+
+# List all subnets in your VPC
+export VPC_ID=$(aws eks describe-cluster --name TFEKSWorkshop-cluster --query "cluster.resourcesVpcConfig.vpcId" --output text)
+aws ec2 describe-subnets --filters "Name=vpc-id,Values=$VPC_ID" --query "Subnets[*].{SubnetId:SubnetId,AvailabilityZone:AvailabilityZone,CidrBlock:CidrBlock,Tags:Tags}" --output table
+
+subnet-042e0b4191a30819e
+subnet-0eaf32a05442dd10f 
+
+
+aws ec2 create-tags --resources subnet-042e0b4191a30819e subnet-0eaf32a05442dd10f  --tags Key=kubernetes.io/role/elb,Value=1
+
+
+alb.ingress.kubernetes.io/subnets: subnet-042e0b4191a30819e,subnet-0eaf32a05442dd10f 

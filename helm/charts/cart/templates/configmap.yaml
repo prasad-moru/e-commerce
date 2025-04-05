@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "cart.fullname" . }}-configmap
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "cart.labels" . | nindent 4 }}
+data:
+  SPRING_REDIS_HOST: {{ .Values.config.redisHost | quote }}
+  SPRING_REDIS_PORT: {{ .Values.config.redisPort | quote }}
+  SPRING_REDIS_PASSWORD: {{ .Values.config.redisPassword | quote }}

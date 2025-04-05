@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cart.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "cart.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "cart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cart.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: cart
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: SPRING_REDIS_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "cart.fullname" . }}-configmap
+              key: SPRING_REDIS_HOST
+        - name: SPRING_REDIS_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "cart.fullname" . }}-configmap
+              key: SPRING_REDIS_PASSWORD
+        - name: SPRING_REDIS_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "cart.fullname" . }}-configmap
+              key: SPRING_REDIS_PORT
+        ports:
+        - name: http
+          containerPort: {{ .Values.service.port }}
+          protocol: TCP

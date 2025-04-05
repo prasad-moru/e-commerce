@@ -1,0 +1,21 @@
+# Default values for Cart service chart
+# This is a YAML-formatted file.
+
+nameOverride: ""
+fullnameOverride: ""
+
+namespace: e-commerce
+
+image:
+  repository: prasad890/ecom-cart
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+config:
+  redisHost: redis-service.shared-services.svc.cluster.local
+  redisPort: 6379
+  redisPassword: ""

@@ -1,0 +1,21 @@
+# Default values for MongoDB chart
+# This is a YAML-formatted file.
+
+nameOverride: ""
+fullnameOverride: ""
+
+namespace: shared-services
+
+image:
+  repository: mongo
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 27017
+  nodePort: null
+
+secrets:
+  rootUsername: mongo-root-username
+  rootPassword: mongo-root-password

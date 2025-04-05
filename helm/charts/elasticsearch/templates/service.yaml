@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: elastic-service
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "elasticsearch.labels" . | nindent 4 }}
+spec:
+  {{- if eq "NodePort" .Values.service.type }}
+  type: NodePort
+  {{- else }}
+  type: {{ .Values.service.type }}
+  {{- end }}
+  ports:
+  - name: rest
+    protocol: TCP
+    port: {{ .Values.service.ports.rest.port }}
+    targetPort: {{ .Values.service.ports.rest.port }}
+    {{- if and (eq "NodePort" .Values.service.type) .Values.service.ports.rest.nodePort }}
+    nodePort: {{ .Values.service.ports.rest.nodePort }}
+    {{- end }}
+  - name: inter-node
+    protocol: TCP
+    port: {{ .Values.service.ports.interNode.port }}
+    targetPort: {{ .Values.service.ports.interNode.port }}
+    {{- if and (eq "NodePort" .Values.service.type) .Values.service.ports.interNode.nodePort }}
+    nodePort: {{ .Values.service.ports.interNode.nodePort }}
+    {{- end }}
+  selector:
+    {{- include "elasticsearch.selectorLabels" . | nindent 4 }}

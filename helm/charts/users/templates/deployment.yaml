@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "users.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "users.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "users.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "users.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: users
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: {{ .Values.service.port }}
+          protocol: TCP

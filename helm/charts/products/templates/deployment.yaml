@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "products.fullname" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    {{- include "products.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "products.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "products.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: products
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+        - name: MONGO_URI
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "products.fullname" . }}-configmap
+              key: MONGO_URI
+        - name: DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: {{ include "products.fullname" . }}-configmap
+              key: DATABASE
+        ports:
+        - name: http
+          containerPort: {{ .Values.service.port }}
+          protocol: TCP

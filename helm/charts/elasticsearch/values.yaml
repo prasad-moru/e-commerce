@@ -1,0 +1,34 @@
+# Default values for Elasticsearch chart
+# This is a YAML-formatted file.
+
+nameOverride: ""
+fullnameOverride: ""
+
+namespace: shared-services
+
+image:
+  repository: elasticsearch
+  tag: 8.2.3
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  ports:
+    rest:
+      port: 9200
+      nodePort: null
+    interNode:
+      port: 9300
+      nodePort: null
+
+config:
+  xpackSecurityEnabled: "false"
+  discoveryType: "single-node"
+
+resources:
+  requests:
+    memory: "2Gi"
+    cpu: "1"
+  limits:
+    memory: "4Gi"
+    cpu: "2"
