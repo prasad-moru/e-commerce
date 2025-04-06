@@ -1,0 +1,4 @@
+# Local environment overrides for Search service
+# This file is empty as the default values work for local deployment
+
+# You can add any local-specific overrides here if needed

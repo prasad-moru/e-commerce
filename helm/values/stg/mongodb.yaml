@@ -1,0 +1,5 @@
+# Local environment overrides for MongoDB
+
+service:
+  type: NodePort
+  nodePort: 32017
